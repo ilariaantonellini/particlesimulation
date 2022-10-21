@@ -9,7 +9,7 @@
 
 class Particle {
  public:
-  Particle(std::string const name, double px, double py, double pz);
+  Particle(std::string const name, double px = 0., double py = 0., double pz = 0.);
   Particle();
 
   int GetIndex() const;
@@ -17,7 +17,7 @@ class Particle {
   void SetIndex(std::string const name);
 
   static void AddParticleType(std::string const name, double mass, int charge,
-                              double width);
+                              double width = 0.);
 
   void PrintParticle() const;
   void PrintIndex() const;

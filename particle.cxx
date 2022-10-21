@@ -8,7 +8,7 @@
 
 int const Particle::fMaxNumParticleType = 10;
 int Particle::fNParticleType = 0;
-std::vector<ParticleType*> Particle::fParticleType{0};
+std::vector<ParticleType*> Particle::fParticleType{};
 
 int Particle::FindParticle(std::string const nameParticle) {
   for (int i = 0; i != static_cast<int>(fParticleType.size()); ++i) {
@@ -19,10 +19,10 @@ int Particle::FindParticle(std::string const nameParticle) {
   return -1;
 }
 
-Particle::Particle() = default;  // constollare se è corretto
+Particle::Particle() = default;  // controllare se è corretto
 
-Particle::Particle(std::string const name, double px = 0, double py = 0,
-                   double pz = 0)
+Particle::Particle(std::string const name, double px, double py,
+                   double pz)
     : fPx{px}, fPy{py}, fPz{pz} {
   if (FindParticle(name) == -1) {
     std::cout << "No correspondence found." << '\n';
@@ -34,14 +34,14 @@ Particle::Particle(std::string const name, double px = 0, double py = 0,
 int Particle::GetIndex() const { return fIndex; }
 
 void Particle::AddParticleType(std::string const name, double mass, int charge,
-                               double width = 0) {
+                               double width) {
   ResonanceType particle(name, mass, charge, width);
   if (FindParticle(name) == -1 && fNParticleType < fMaxNumParticleType) {
     fParticleType.push_back(&particle);
   }
 }
 
-void Particle::SetIndex(std::string const name) {
+void Particle::SetIndex(std::string const name) { // è sbagliato 
   if (FindParticle(name) != -1) {
     fIndex = FindParticle(name);
   }

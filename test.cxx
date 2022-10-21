@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 
+#include "particle.h"
 #include "particletype.h"
 #include "resonancetype.h"
 
@@ -17,4 +18,10 @@ int main() {
   for (int i = 0; i < 2; ++i) {
     (v[i])->Print();
   }
+
+  Particle p{"proton"};
+
+  p.AddParticleType("proton", 1.67, 1);
+  p.SetIndex("proton");
+  //std::cout << p.GetMass() <<'\n'; */
 }
