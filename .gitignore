@@ -1,0 +1,17 @@
+# libraries for particle.cxx
+particle_cxx.d
+particle_cxx.so
+particle_cxx_ACLiC_dict_rdict.pcm
+
+# libraries for particletype.cxx
+particletype_cxx.d
+particletype_cxx.so
+particletype_cxx_ACLiC_dict_rdict.pcm
+
+# libraries for resonancetype.cxx
+resonancetype_cxx.d        
+resonancetype_cxx.so
+resonancetype_cxx_ACLiC_dict_rdict.pcm
+
+# executables
+a.out
