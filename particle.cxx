@@ -32,15 +32,19 @@ Particle::Particle(std::string const& name, double px, double py, double pz)
 
 int Particle::GetIndex() const { return fIndex; }
 
-void Particle::AddParticleType(std::string const& name, double mass, int charge,
-                               double width) {
-  ResonanceType particle(name, mass, charge, width);
+void Particle::AddParticleType(
+    std::string const& name, double mass,
+    int charge,  // non salva le cose in fParticleType
+    double width) {
+  // ResonanceType particle(name, mass, charge, width);
+  ResonanceType* particle = new ResonanceType(name, mass, charge, width);
+  // molto riscioso
   if (FindParticle(name) == -1 && fNParticleType < fMaxNumParticleType) {
-    fParticleType.push_back(&particle);
+    fParticleType.push_back(particle);
   }
 }
 
-void Particle::SetIndex(std::string const& name) {  // è sbagliato
+void Particle::SetIndex(std::string const& name) {  // è sbagliato forse
   if (FindParticle(name) != -1) {
     fIndex = FindParticle(name);
   } else {
@@ -69,9 +73,7 @@ double Particle::GetPx() const { return fPx; }
 double Particle::GetPy() const { return fPy; }
 double Particle::GetPz() const { return fPz; }
 
-double Particle::GetMass() const {  
-  return fParticleType[fIndex]->GetMass();
-}
+double Particle::GetMass() const { return fParticleType[fIndex]->GetMass(); }
 
 double Particle::Energy() const {
   double energy =

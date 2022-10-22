@@ -9,7 +9,8 @@
 
 class Particle {
  public:
-  Particle(std::string const& name, double px = 0., double py = 0., double pz = 0.);
+  Particle(std::string const& name, double px = 0., double py = 0.,
+           double pz = 0.);
   Particle();
 
   int GetIndex() const;

@@ -15,15 +15,19 @@ int main() {
   std::cout << i << '\n';
   std::vector<ParticleType*> v{&k, &kstar};
 
-  for (int i = 0; i < 2; ++i) {
+  for (int i = 0; i != 2; ++i) {
     (v[i])->Print();
   }
 
   Particle p("proton");
-  p.AddParticleType("proton", 1.67, 5, 5);
-  Particle p1("proton", 0.1, 0.2, 0.3);
-  p1.SetIndex("proton");
+  p.AddParticleType("proton", 1.67, 5, 5);  // fino a qui ci siamo
+  p.AddParticleType("electron", 1.67, 5, 5); 
+  p.SetIndex("electron"); // fino a qui ci siamo
   p.PrintIndex();
-  //p.SetIndex("proton");
-  //std::cout << p.GetMass() <<'\n'; */
+  p.PrintParticle();
+
+  /* Particle p1("proton", 0.1, 0.2, 0.3);
+  p.PrintIndex(); */
+  // p.SetIndex("proton");
+  // std::cout << p.GetMass() <<'\n'; */
 }
