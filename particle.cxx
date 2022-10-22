@@ -61,17 +61,22 @@ void Particle::SetIndex(int index) { fIndex = index; }
 
 void Particle::PrintParticle() {
   // std::cout << fParticleType.size() << '\n';
+  std::cout << '\n';
   for (int i = 0; i != static_cast<int>(fParticleType.size()); ++i) {
     fParticleType[i]->Print();
+    std::cout << '\n';
   }
+  std::cout << '\n';
 }
 
 void Particle::PrintIndex() const {
+  std::cout << '\n';
   std::cout << "Index: " << fIndex << '\n';
   std::cout << "Particle name: " << fParticleType[fIndex]->GetName() << '\n';
   std::cout << "Px: " << fPx << '\n';
   std::cout << "Py: " << fPy << '\n';
   std::cout << "Pz: " << fPz << '\n';
+  std::cout << '\n';
 }
 
 double Particle::GetPx() const { return fPx; }
