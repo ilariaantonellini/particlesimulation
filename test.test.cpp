@@ -24,10 +24,43 @@ TEST_CASE("Testing resonance type") {
   CHECK((r.GetWidth()) == 12.0);
 }
 
+TEST_CASE("Testing vector"){
+  ParticleType k{"Kaon", 50., 3};
+  ResonanceType kstar{"Kstar", 5.1, 6, 18.33};
+
+  k.Print();
+  std::cout << '\n';
+  kstar.Print();
+  std::cout << '\n';
+  std::vector<ParticleType*> v{&k, &kstar};
+
+  for (int i = 0; i != 2; ++i) {
+    (v[i])->Print();
+    std::cout << '\n';
+  }
+}
+
 TEST_CASE("Testing particle") {
   Particle p("p");
   p.AddParticleType("e", 9.8, 5);
   p.AddParticleType("p", 1.6, 2, 3.0);
-  p.SetIndex("p");
+  p.SetIndex("e");
+  CHECK((p.GetIndex()) == 0);
+  p.SetIndex(1);
   CHECK((p.GetIndex()) == 1);
+  p.SetP(0.1, 0.2, 0.3);
+  CHECK((p.GetPx() == 0.1));
+  CHECK((p.GetPy() == 0.2));
+  CHECK((p.GetPz() == 0.3));
+  CHECK((p.Energy()) == doctest::Approx(1.64).epsilon(0.01));
+  Particle p1("e");
+  p1.SetIndex("e");
+  CHECK((p1.GetIndex()) == 0);
+  p1.SetP(1., 2., 3.);
+  CHECK((p1.GetMass()) == 9.8);
+  CHECK((p1.GetPx() == 1.));
+  CHECK((p1.GetPy() == 2.));
+  CHECK((p1.GetPz() == 3.));
+  CHECK((p1.Energy()) == doctest::Approx(10.48).epsilon(0.01));
+  CHECK((p.InvMass(p1) == doctest::Approx(11.39).epsilon(0.01)));
 }

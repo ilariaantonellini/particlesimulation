@@ -37,10 +37,15 @@ void Particle::AddParticleType(
     int charge,  // non salva le cose in fParticleType
     double width) {
   // ResonanceType particle(name, mass, charge, width);
-  ResonanceType* particle = new ResonanceType(name, mass, charge, width);
   // molto riscioso
   if (FindParticle(name) == -1 && fNParticleType < fMaxNumParticleType) {
-    fParticleType.push_back(particle);
+    if (width != 0) {
+      ResonanceType* particle = new ResonanceType(name, mass, charge, width);
+      fParticleType.push_back(particle);
+    } else {
+      ParticleType* particle = new ParticleType(name, mass, charge);
+      fParticleType.push_back(particle);
+    }
   }
 }
 
@@ -77,7 +82,7 @@ double Particle::GetMass() const { return fParticleType[fIndex]->GetMass(); }
 
 double Particle::Energy() const {
   double energy =
-      std::sqrt((GetMass() * GetMass()) - (fPx * fPx + fPy * fPy + fPz * fPz));
+      std::sqrt((GetMass() * GetMass()) + (fPx * fPx + fPy * fPy + fPz * fPz));
   return energy;
 }
 
