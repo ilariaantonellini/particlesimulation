@@ -11,7 +11,7 @@ class ParticleType {
 
   virtual void Print() const;
 
-  ParticleType(std::string const name, double mass, int charge);
+  ParticleType(std::string const& name, double mass, int charge);
 
  private:
   std::string const fName;

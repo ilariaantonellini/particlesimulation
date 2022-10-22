@@ -10,5 +10,5 @@ void ParticleType::Print() const {
   std::cout << "Particle mass: " << fMass << '\n';
   std::cout << "Particle charge: " << fCharge << '\n';
 }
-ParticleType::ParticleType(std::string const name, double mass, int charge)
+ParticleType::ParticleType(std::string const& name, double mass, int charge)
     : fName{name}, fMass{mass}, fCharge{charge} {}

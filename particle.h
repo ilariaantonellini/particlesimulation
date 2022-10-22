@@ -9,17 +9,17 @@
 
 class Particle {
  public:
-  Particle(std::string const name, double px = 0., double py = 0., double pz = 0.);
+  Particle(std::string const& name, double px = 0., double py = 0., double pz = 0.);
   Particle();
 
   int GetIndex() const;
   void SetIndex(int index);
-  void SetIndex(std::string const name);
+  void SetIndex(std::string const& name);
 
-  static void AddParticleType(std::string const name, double mass, int charge,
+  static void AddParticleType(std::string const& name, double mass, int charge,
                               double width = 0.);
 
-  void PrintParticle() const;
+  static void PrintParticle();
   void PrintIndex() const;
 
   double GetPx() const;
@@ -44,6 +44,6 @@ class Particle {
   double fPz;
 
   static int FindParticle(
-      std::string const nameParticle);  // controllare lo static
+      std::string const& nameParticle);  // controllare lo static
 };
 #endif

@@ -10,7 +10,7 @@ int const Particle::fMaxNumParticleType = 10;
 int Particle::fNParticleType = 0;
 std::vector<ParticleType*> Particle::fParticleType{};
 
-int Particle::FindParticle(std::string const nameParticle) {
+int Particle::FindParticle(std::string const& nameParticle) {
   for (int i = 0; i != static_cast<int>(fParticleType.size()); ++i) {
     if (nameParticle == fParticleType[i]->GetName()) {
       return i;
@@ -21,8 +21,7 @@ int Particle::FindParticle(std::string const nameParticle) {
 
 Particle::Particle() = default;  // controllare se è corretto
 
-Particle::Particle(std::string const name, double px, double py,
-                   double pz)
+Particle::Particle(std::string const& name, double px, double py, double pz)
     : fPx{px}, fPy{py}, fPz{pz} {
   if (FindParticle(name) == -1) {
     std::cout << "No correspondence found." << '\n';
@@ -33,7 +32,7 @@ Particle::Particle(std::string const name, double px, double py,
 
 int Particle::GetIndex() const { return fIndex; }
 
-void Particle::AddParticleType(std::string const name, double mass, int charge,
+void Particle::AddParticleType(std::string const& name, double mass, int charge,
                                double width) {
   ResonanceType particle(name, mass, charge, width);
   if (FindParticle(name) == -1 && fNParticleType < fMaxNumParticleType) {
@@ -41,35 +40,36 @@ void Particle::AddParticleType(std::string const name, double mass, int charge,
   }
 }
 
-void Particle::SetIndex(std::string const name) { // è sbagliato 
+void Particle::SetIndex(std::string const& name) {  // è sbagliato
   if (FindParticle(name) != -1) {
     fIndex = FindParticle(name);
+  } else {
+    std::cout << "Particle not found." << '\n';
   }
 }
 
 void Particle::SetIndex(int index) { fIndex = index; }
 
-void Particle::PrintParticle() const {
+void Particle::PrintParticle() {
+  // std::cout << fParticleType.size() << '\n';
   for (int i = 0; i != static_cast<int>(fParticleType.size()); ++i) {
     fParticleType[i]->Print();
   }
 }
 
 void Particle::PrintIndex() const {
-  for (int i = 0; i != static_cast<int>(fParticleType.size()); ++i) {
-    std::cout << "Index: " << i << '\n';
-    std::cout << "Particle name: " << fParticleType[i]->GetName() << '\n';
-    std::cout << "Px: " << fPx << '\n';
-    std::cout << "Py: " << fPy << '\n';
-    std::cout << "Pz: " << fPz << '\n';
-  }
+  std::cout << "Index: " << fIndex << '\n';
+  std::cout << "Particle name: " << fParticleType[fIndex]->GetName() << '\n';
+  std::cout << "Px: " << fPx << '\n';
+  std::cout << "Py: " << fPy << '\n';
+  std::cout << "Pz: " << fPz << '\n';
 }
 
 double Particle::GetPx() const { return fPx; }
 double Particle::GetPy() const { return fPy; }
 double Particle::GetPz() const { return fPz; }
 
-double Particle::GetMass() const {  // svincolare questo dalla massa
+double Particle::GetMass() const {  
   return fParticleType[fIndex]->GetMass();
 }
 

@@ -7,6 +7,6 @@ void ResonanceType::Print() const {
   ParticleType::Print();
   std::cout << "Particle width: " << fWidth << '\n';
 }
-ResonanceType::ResonanceType(std::string const name, double mass, int charge, double width)
+ResonanceType::ResonanceType(std::string const& name, double mass, int charge, double width)
     : ParticleType(name, mass, charge), fWidth{width} {}
 

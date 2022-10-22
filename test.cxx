@@ -19,9 +19,11 @@ int main() {
     (v[i])->Print();
   }
 
-  Particle p{"proton"};
-
-  p.AddParticleType("proton", 1.67, 1);
-  p.SetIndex("proton");
+  Particle p("proton");
+  p.AddParticleType("proton", 1.67, 5, 5);
+  Particle p1("proton", 0.1, 0.2, 0.3);
+  p1.SetIndex("proton");
+  p.PrintIndex();
+  //p.SetIndex("proton");
   //std::cout << p.GetMass() <<'\n'; */
 }
