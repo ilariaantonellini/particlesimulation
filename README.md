@@ -1,5 +1,7 @@
 # Particle Simulation
 
+<p align="center"> <img src="./particlesimulation.png"> </p>
+
 ### Introduction 
 
 [Particle Simulation](#particlesimulation) is a project which [I developed](https://github.com/ilariaantonellini/) during 2022-2023 module 3 of the course [Laboratorio di elettromagnetismo e ottica](https://www.unibo.it/it/didattica/insegnamenti/insegnamento/2022/434322/).
