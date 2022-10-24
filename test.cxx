@@ -19,9 +19,10 @@ int main() {
     (v[i])->Print();
   }
 
+  //Particle p("electron");
+  Particle::AddParticleType("proton", 1.67, 5, 5);  // fino a qui ci siamo
+  Particle::AddParticleType("electron", 1.67, 5); 
   Particle p("electron");
-  p.AddParticleType("proton", 1.67, 5, 5);  // fino a qui ci siamo
-  p.AddParticleType("electron", 1.67, 5); 
   p.SetIndex("electron"); // fino a qui ci siamo
   p.PrintIndex();
   p.PrintParticle();

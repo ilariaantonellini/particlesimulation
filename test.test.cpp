@@ -40,8 +40,8 @@ TEST_CASE("Testing vector"){
   }
 }
 
-TEST_CASE("Testing particle") {
-  Particle p("p");
+TEST_CASE("Testing particle") { //questo test case si può eventualmente eliminare
+  Particle p;
   p.AddParticleType("e", 9.8, 5);
   p.AddParticleType("p", 1.6, 2, 3.0);
   p.SetIndex("e");
@@ -55,6 +55,26 @@ TEST_CASE("Testing particle") {
   CHECK((p.Energy()) == doctest::Approx(1.64).epsilon(0.01));
   Particle p1("e");
   p1.SetIndex("e");
+  CHECK((p1.GetIndex()) == 0);
+  p1.SetP(1., 2., 3.);
+  CHECK((p1.GetMass()) == 9.8);
+  CHECK((p1.GetPx() == 1.));
+  CHECK((p1.GetPy() == 2.));
+  CHECK((p1.GetPz() == 3.));
+  CHECK((p1.Energy()) == doctest::Approx(10.48).epsilon(0.01));
+  CHECK((p.InvMass(p1) == doctest::Approx(11.39).epsilon(0.01)));
+}
+TEST_CASE("Testing AddParticleType function"){
+  Particle::AddParticleType("e", 9.8, 5);
+  Particle::AddParticleType("p", 1.6, 2, 3.0);
+  Particle p("p");
+  CHECK((p.GetIndex()) == 1);
+  p.SetP(0.1, 0.2, 0.3);
+  CHECK((p.GetPx() == 0.1));
+  CHECK((p.GetPy() == 0.2));
+  CHECK((p.GetPz() == 0.3));
+  CHECK((p.Energy()) == doctest::Approx(1.64).epsilon(0.01));
+  Particle p1("e");
   CHECK((p1.GetIndex()) == 0);
   p1.SetP(1., 2., 3.);
   CHECK((p1.GetMass()) == 9.8);
