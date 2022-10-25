@@ -50,14 +50,18 @@ void Particle::AddParticleType(
 }
 
 void Particle::SetIndex(std::string const& name) {  // è sbagliato forse
-  if (FindParticle(name) != -1) {
+  if (FindParticle(name) != -1 && FindParticle(name) < fParticleType.size()) {
     fIndex = FindParticle(name);
   } else {
     std::cout << "Particle not found." << '\n';
   }
 }
 
-void Particle::SetIndex(int index) { fIndex = index; }
+void Particle::SetIndex(int index) {
+  if (index != -1 && index < fParticleType.size()) {
+    fIndex = index;
+  }
+}
 
 void Particle::PrintParticle() {
   // std::cout << fParticleType.size() << '\n';
