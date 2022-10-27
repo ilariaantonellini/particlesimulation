@@ -50,7 +50,8 @@ void Particle::AddParticleType(
 }
 
 void Particle::SetIndex(std::string const& name) {  // è sbagliato forse
-  if (FindParticle(name) != -1 && FindParticle(name) < fParticleType.size()) {
+  if (FindParticle(name) != -1 &&
+      FindParticle(name) < static_cast<int>(fParticleType.size())) {
     fIndex = FindParticle(name);
   } else {
     std::cout << "Particle not found." << '\n';
@@ -58,7 +59,7 @@ void Particle::SetIndex(std::string const& name) {  // è sbagliato forse
 }
 
 void Particle::SetIndex(int index) {
-  if (index != -1 && index < fParticleType.size()) {
+  if (index != -1 && index < static_cast<int>(fParticleType.size())) {
     fIndex = index;
   }
 }

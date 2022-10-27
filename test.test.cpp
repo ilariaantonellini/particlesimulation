@@ -24,7 +24,7 @@ TEST_CASE("Testing resonance type") {
   CHECK((r.GetWidth()) == 12.0);
 }
 
-TEST_CASE("Testing vector"){
+TEST_CASE("Testing vector") {
   ParticleType k{"Kaon", 50., 3};
   ResonanceType kstar{"Kstar", 5.1, 6, 18.33};
 
@@ -40,7 +40,21 @@ TEST_CASE("Testing vector"){
   }
 }
 
-TEST_CASE("Testing particle") { //questo test case si può eventualmente eliminare
+TEST_CASE("Testing constness") {
+  ParticleType const k("proton", 1.67, 1);
+  CHECK((k.GetName()) == "proton");
+  CHECK((k.GetMass()) == 1.67);
+  CHECK((k.GetCharge()) == 1);
+  
+  ResonanceType const r("kaon", 555., 2, 12.);
+  CHECK((r.GetName()) == "kaon");
+  CHECK((r.GetMass()) == 555.);
+  CHECK((r.GetCharge()) == 2);
+  CHECK((r.GetWidth()) == 12.0);
+}
+
+TEST_CASE(
+    "Testing particle") {  // questo test case si può eventualmente eliminare
   Particle p;
   p.AddParticleType("e", 9.8, 5);
   p.AddParticleType("p", 1.6, 2, 3.0);
@@ -64,7 +78,7 @@ TEST_CASE("Testing particle") { //questo test case si può eventualmente elimina
   CHECK((p1.Energy()) == doctest::Approx(10.48).epsilon(0.01));
   CHECK((p.InvMass(p1) == doctest::Approx(11.39).epsilon(0.01)));
 }
-TEST_CASE("Testing AddParticleType function"){
+TEST_CASE("Testing AddParticleType function") {
   Particle::AddParticleType("e", 9.8, 5);
   Particle::AddParticleType("p", 1.6, 2, 3.0);
   Particle p("p");
