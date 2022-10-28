@@ -8,6 +8,7 @@ class ParticleType {
   std::string GetName() const;
   double GetMass() const;
   int GetCharge() const;
+  virtual double GetWidth() const;
 
   virtual void Print() const;
 
