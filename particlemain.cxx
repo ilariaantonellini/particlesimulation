@@ -10,7 +10,7 @@
 #include "particletype.h"
 #include "resonancetype.h"
 
-int main() {
+void particleMain() {
   gRandom->SetSeed();
 
   TFile* file = new TFile("particlegeneration.root", "RECREATE");
@@ -156,31 +156,31 @@ int main() {
   TCanvas* c = new TCanvas("c", "Histograms", 200, 10, 600, 400);
   c->Divide(4, 3);
   c->cd(1);
-  h1->Draw();
+  h1->DrawCopy("H");
   c->cd(2);
-  h2->Draw();
+  h2->DrawCopy("H");
   c->cd(3);
-  h3->Draw();
+  h3->DrawCopy("H");
   c->cd(4);
-  h4->Draw();
+  h4->DrawCopy("H");
   c->cd(5);
-  h5->Draw();
+  h5->DrawCopy("H");
   c->cd(6);
-  h6->Draw();
+  h6->DrawCopy("H");
   c->cd(7);
-  h7->Draw();
+  h7->DrawCopy("H");
   c->cd(8);
-  h8->Draw();
+  h8->DrawCopy("H");
   c->cd(9);
-  h9->Draw();
+  h9->DrawCopy("H");
   c->cd(10);
-  h10->Draw();
+  h10->DrawCopy("H");
   c->cd(11);
-  h11->Draw();
+  h11->DrawCopy("H");
   c->cd(12);
-  h12->Draw();
+  h12->DrawCopy("H");
 
-  file->Write();
+  // file->Write();
   h1->Write();
   h2->Write();
   h3->Write();
