@@ -24,4 +24,8 @@ a.out
 # root
 *.root
 
+#supplies
+tagli.cpp
+extra.cxx
+
 

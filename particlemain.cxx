@@ -25,6 +25,9 @@ void particleMain() {
 
   Particle::PrintParticle();
 
+  // capire se vale la pena fare un array di istogrammi o una via di mezzo
+  // magari usando una tlist -> mi sa che andrà di tlist
+
   TH1F* h1 = new TH1F("h1", "Types of particle", 7, 0, 7);
   TH1F* h2 =
       new TH1F("h2", "Distribution of azimutal angles", 1000, 0, 2 * M_PI);
@@ -33,11 +36,13 @@ void particleMain() {
   TH1F* h5 = new TH1F("h5", "Distribution of transverse p", 500, 0, 10);
   TH1F* h6 = new TH1F("h6", "Particles energy", 500, 0, 10);
   TH1F* h7 = new TH1F("h7", "Invariant mass for all particles", 80, 0, 2);
+
   // massa invariante range tra 0  e 2 ->binnaggio rapportanto a larghezza del
   // segnale
   // sigma è 0.05 mev
   // bin grandezza orine di quella quantità fare dai 40 o 160 come multiplo di
   // 40 energia stesso numero di bin della p
+
   TH1F* h8 = new TH1F("h8", "Invariant mass with opposite charge", 80, 0, 2);
   TH1F* h9 = new TH1F("h9", "Invariant mass with same charge", 80, 0, 2);
   TH1F* h10 = new TH1F(
@@ -155,6 +160,7 @@ void particleMain() {
 
   TCanvas* c = new TCanvas("c", "Histograms", 200, 10, 600, 400);
   c->Divide(4, 3);
+
   c->cd(1);
   h1->DrawCopy("H");
   c->cd(2);
@@ -181,6 +187,7 @@ void particleMain() {
   h12->DrawCopy("H");
 
   // file->Write();
+
   h1->Write();
   h2->Write();
   h3->Write();
@@ -196,3 +203,5 @@ void particleMain() {
 
   file->Close();
 }
+
+int main() { particleMain(); }
