@@ -32,3 +32,24 @@ int main() {
   // p.SetIndex("proton");
   // std::cout << p.GetMass() <<'\n'; */
 }
+
+//TAGLI:
+
+ /* if (particle.GetIndex() == 6) {
+        Particle p1;
+        Particle p2;
+        double const y = gRandom->Rndm();
+
+        if (y < 0.5) {
+          p1.SetIndex("Pion+");
+          p2.SetIndex("Kaon-");g+++
+          particle.Decay2body(p1, p2);
+        } else {
+          p1.SetIndex("Pion-");
+          p2.SetIndex("Kaon+");
+          particle.Decay2body(p1, p2);
+        }
+
+        EventParticle.push_back(p1);
+        EventParticle.push_back(p2);
+      } */

@@ -1,7 +1,7 @@
-#include <cmath>    // for M_PI
+/*  #include <cmath>    // for M_PI
 #include <cstdlib>  //for RAND_MAX
 
-#include "particle.h"
+#include "particle.h" 
 
 int Particle::Decay2body(Particle &dau1, Particle &dau2) const {
   if (GetMass() == 0.0) {
@@ -78,4 +78,4 @@ void Particle::Boost(double bx, double by, double bz) {
   fPx += gamma2 * bp * bx + gamma * bx * energy;
   fPy += gamma2 * bp * by + gamma * by * energy;
   fPz += gamma2 * bp * bz + gamma * bz * energy;
-}
+} */
