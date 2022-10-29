@@ -45,7 +45,7 @@ TEST_CASE("Testing constness") {
   CHECK((k.GetName()) == "proton");
   CHECK((k.GetMass()) == 1.67);
   CHECK((k.GetCharge()) == 1);
-  
+
   ResonanceType const r("kaon", 555., 2, 12.);
   CHECK((r.GetName()) == "kaon");
   CHECK((r.GetMass()) == 555.);
@@ -74,6 +74,8 @@ TEST_CASE(
   CHECK((p1.GetMass()) == 9.8);
   CHECK((p1.GetPx() == 1.));
   CHECK((p1.GetPy() == 2.));
+  CHECK((p1.GetCharge()) == 5);
+  CHECK((p.GetCharge()) == 2);
   CHECK((p1.GetPz() == 3.));
   CHECK((p1.Energy()) == doctest::Approx(10.48).epsilon(0.01));
   CHECK((p.InvMass(p1) == doctest::Approx(11.39).epsilon(0.01)));
@@ -97,4 +99,6 @@ TEST_CASE("Testing AddParticleType function") {
   CHECK((p1.GetPz() == 3.));
   CHECK((p1.Energy()) == doctest::Approx(10.48).epsilon(0.01));
   CHECK((p.InvMass(p1) == doctest::Approx(11.39).epsilon(0.01)));
+  CHECK((p1.GetCharge()) == 5);
+  CHECK((p.GetCharge()) == 2);
 }

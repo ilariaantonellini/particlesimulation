@@ -89,6 +89,10 @@ double Particle::GetPx() const { return fPx; }
 double Particle::GetPy() const { return fPy; }
 double Particle::GetPz() const { return fPz; }
 
+int Particle::GetCharge() const {
+  return fParticleType[fIndex]->GetCharge();
+}
+
 double Particle::GetMass() const { return fParticleType[fIndex]->GetMass(); }
 
 double Particle::Energy() const {

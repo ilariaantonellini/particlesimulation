@@ -27,6 +27,8 @@ class Particle {
   double GetPy() const;
   double GetPz() const;
 
+  int GetCharge() const;
+
   double GetMass() const;
 
   double Energy() const;

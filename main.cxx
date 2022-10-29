@@ -1,6 +1,8 @@
 #include <cmath>
 #include <vector>
 
+#include "TCanvas.h"
+#include "TFile.h"
 #include "TH1F.h"
 #include "TMath.h"
 #include "TRandom.h"
@@ -10,6 +12,8 @@
 
 int main() {
   gRandom->SetSeed();
+
+  TFile* file = new TFile("particlegeneration.root", "RECREATE");
 
   Particle::AddParticleType("Pion+", 0.13957, 1);
   Particle::AddParticleType("Pion-", 0.13957, -1);
@@ -42,6 +46,11 @@ int main() {
       "h11", "Invariant mass between Pion+/Kaon+ and Pion-/Kaon-", 80, 0, 2);
   TH1F* h12 =
       new TH1F("h12", "Invariant mass between decay products", 80, 0, 2);
+  h8->Sumw2();
+  h9->Sumw2();
+  h10->Sumw2();
+  h11->Sumw2();
+  h12->Sumw2();
 
   std::vector<Particle> EventParticles;
 
@@ -80,7 +89,7 @@ int main() {
       h3->Fill(theta);
       h4->Fill(p);
       h5->Fill(TMath::Sqrt(particle.GetPx() * particle.GetPx() +
-                         particle.GetPy() * particle.GetPy()));
+                           particle.GetPy() * particle.GetPy()));
       h6->Fill(particle.Energy());
     }
 
@@ -102,19 +111,88 @@ int main() {
 
         EventParticles.push_back(p1);
         EventParticles.push_back(p2);
+        h12->Fill(p1.InvMass(p2));
       }
     }
-  auto it = EventParticles.begin();
-  for (; it != EventParticles.end(); ++it) {
-    auto it_2 = std::next(it);
-    for (; it_2 != EventParticles.end(); ++it_2) {
-      auto invmass = (*it).InvMass(*it_2);
-      h7->Fill(invmass);
-      /* auto p = (*it).;
-      if () */
+
+    auto it = EventParticles.begin();
+    for (; it != EventParticles.end(); ++it) {
+      auto it_2 = std::next(it);
+      for (; it_2 != EventParticles.end(); ++it_2) {
+        auto invmass = it->InvMass(*it_2);
+        h7->Fill(invmass);  // non so se metterlo
+        if (it->GetCharge() != 0 && it_2->GetCharge() != 0) {
+          if (it->GetCharge() != it_2->GetCharge()) {
+            h8->Fill(invmass);
+            if ((it->GetIndex() == 0 && it_2->GetIndex() == 3) ||
+                (it_2->GetIndex() == 0 && it->GetIndex() == 3)) {
+              h10->Fill(invmass);
+            } else if ((it->GetIndex() == 1 && it_2->GetIndex() == 2) ||
+                       (it_2->GetIndex() == 1 && it->GetIndex() == 2)) {
+              h10->Fill(invmass);
+            }
+          } else {
+            h9->Fill(invmass);
+            if ((it->GetIndex() == 0 && it_2->GetIndex() == 2) ||
+                (it_2->GetIndex() == 0 && it->GetIndex() == 2)) {
+              h11->Fill(invmass);
+            } else if ((it->GetIndex() == 1 && it_2->GetIndex() == 3) ||
+                       (it_2->GetIndex() == 1 && it->GetIndex() == 3)) {
+              h11->Fill(invmass);
+            }
+          }
+        }
+      }
     }
+
+    /* for(unsigned long k=100; k!= EventParticles.size() &&
+    (k+1)!=EventParticles.size(); k+=2){ double inv =
+    EventParticles[k].InvMass(EventParticles[k+1]); h12->Fill(inv);
+    } */
+
+    EventParticles.clear();
   }
 
-   EventParticles.clear();
-  }
+  TCanvas* c = new TCanvas("c", "Histograms", 200, 10, 600, 400);
+  c->Divide(4, 3);
+  c->cd(1);
+  h1->Draw();
+  c->cd(2);
+  h2->Draw();
+  c->cd(3);
+  h3->Draw();
+  c->cd(4);
+  h4->Draw();
+  c->cd(5);
+  h5->Draw();
+  c->cd(6);
+  h6->Draw();
+  c->cd(7);
+  h7->Draw();
+  c->cd(8);
+  h8->Draw();
+  c->cd(9);
+  h9->Draw();
+  c->cd(10);
+  h10->Draw();
+  c->cd(11);
+  h11->Draw();
+  c->cd(12);
+  h12->Draw();
+
+  file->Write();
+  h1->Write();
+  h2->Write();
+  h3->Write();
+  h4->Write();
+  h5->Write();
+  h6->Write();
+  h7->Write();
+  h8->Write();
+  h9->Write();
+  h10->Write();
+  h11->Write();
+  h12->Write();
+
+  file->Close();
 }
