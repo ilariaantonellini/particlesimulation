@@ -40,7 +40,6 @@ class Particle {
   int Decay2body(Particle& dau1, Particle& dau2) const;
 
  private:
-  static int const fMaxNumParticleType;  // non obbligatorio usando vector
   static std::vector<ParticleType*> fParticleType;
   static int fNParticleType;  // da controllare e capire
   int fIndex;
@@ -48,8 +47,7 @@ class Particle {
   double fPy;
   double fPz;
 
-  static int FindParticle(
-      std::string const& nameParticle);  // controllare lo static
+  static int FindParticle(std::string const& nameParticle);
 
   void Boost(double bx, double by, double bz);
 };

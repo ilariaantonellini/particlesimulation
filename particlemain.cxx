@@ -5,12 +5,27 @@
 #include "TFile.h"
 #include "TH1F.h"
 #include "TMath.h"
+#include "TROOT.h"
 #include "TRandom.h"
+#include "TStyle.h"
 #include "particle.h"
 #include "particletype.h"
 #include "resonancetype.h"
 
+void serStyle() {
+  gROOT->SetStyle("Plain");
+  gStyle->SetOptStat(1122);
+  gStyle->SetOptFit(111);
+  gStyle->SetPalette(57);
+  gStyle->SetOptTitle(0);
+}
+
 void particleMain() {
+  // to avoid reload manually
+  R__LOAD_LIBRARY(particletype_cxx.so);
+  R__LOAD_LIBRARY(resonancetype_cxx.so);
+  R__LOAD_LIBRARY(particle_cxx.so);
+
   gRandom->SetSeed();
 
   TFile* file = new TFile("particlegeneration.root", "RECREATE");
@@ -25,9 +40,6 @@ void particleMain() {
 
   Particle::PrintParticle();
 
-  // capire se vale la pena fare un array di istogrammi o una via di mezzo
-  // magari usando una tlist -> mi sa che andrà di tlist
-
   TH1F* h1 = new TH1F("h1", "Types of particle", 7, 0, 7);
   TH1F* h2 =
       new TH1F("h2", "Distribution of azimutal angles", 1000, 0, 2 * M_PI);
@@ -36,13 +48,6 @@ void particleMain() {
   TH1F* h5 = new TH1F("h5", "Distribution of transverse p", 500, 0, 10);
   TH1F* h6 = new TH1F("h6", "Particles energy", 500, 0, 10);
   TH1F* h7 = new TH1F("h7", "Invariant mass for all particles", 80, 0, 2);
-
-  // massa invariante range tra 0  e 2 ->binnaggio rapportanto a larghezza del
-  // segnale
-  // sigma è 0.05 mev
-  // bin grandezza orine di quella quantità fare dai 40 o 160 come multiplo di
-  // 40 energia stesso numero di bin della p
-
   TH1F* h8 = new TH1F("h8", "Invariant mass with opposite charge", 80, 0, 2);
   TH1F* h9 = new TH1F("h9", "Invariant mass with same charge", 80, 0, 2);
   TH1F* h10 = new TH1F(
@@ -51,11 +56,26 @@ void particleMain() {
       "h11", "Invariant mass between Pion+/Kaon+ and Pion-/Kaon-", 80, 0, 2);
   TH1F* h12 =
       new TH1F("h12", "Invariant mass between decay products", 80, 0, 2);
+  h7->Sumw2();
   h8->Sumw2();
   h9->Sumw2();
   h10->Sumw2();
   h11->Sumw2();
   h12->Sumw2();
+
+  std::vector<TH1F*> histograms;
+  histograms.push_back(h1);
+  histograms.push_back(h2);
+  histograms.push_back(h3);
+  histograms.push_back(h4);
+  histograms.push_back(h5);
+  histograms.push_back(h6);
+  histograms.push_back(h7);
+  histograms.push_back(h8);
+  histograms.push_back(h9);
+  histograms.push_back(h10);
+  histograms.push_back(h11);
+  histograms.push_back(h12);
 
   std::vector<Particle> EventParticles;
 
@@ -150,57 +170,19 @@ void particleMain() {
       }
     }
 
-    /* for(unsigned long k=100; k!= EventParticles.size() &&
-    (k+1)!=EventParticles.size(); k+=2){ double inv =
-    EventParticles[k].InvMass(EventParticles[k+1]); h12->Fill(inv);
-    } */
-
     EventParticles.clear();
   }
 
   TCanvas* c = new TCanvas("c", "Histograms", 200, 10, 600, 400);
   c->Divide(4, 3);
 
-  c->cd(1);
-  h1->DrawCopy("H");
-  c->cd(2);
-  h2->DrawCopy("H");
-  c->cd(3);
-  h3->DrawCopy("H");
-  c->cd(4);
-  h4->DrawCopy("H");
-  c->cd(5);
-  h5->DrawCopy("H");
-  c->cd(6);
-  h6->DrawCopy("H");
-  c->cd(7);
-  h7->DrawCopy("H");
-  c->cd(8);
-  h8->DrawCopy("H");
-  c->cd(9);
-  h9->DrawCopy("H");
-  c->cd(10);
-  h10->DrawCopy("H");
-  c->cd(11);
-  h11->DrawCopy("H");
-  c->cd(12);
-  h12->DrawCopy("H");
+  for (int i = 0; i < 12; ++i) {
+    c->cd(i + 1);
+    histograms[i]->DrawCopy("H");
+    histograms[i]->DrawCopy("E, SAME");
+  }
 
-  // file->Write();
-
-  h1->Write();
-  h2->Write();
-  h3->Write();
-  h4->Write();
-  h5->Write();
-  h6->Write();
-  h7->Write();
-  h8->Write();
-  h9->Write();
-  h10->Write();
-  h11->Write();
-  h12->Write();
-
+  file->Write();
   file->Close();
 }
 

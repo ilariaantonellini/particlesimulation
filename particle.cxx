@@ -7,7 +7,6 @@
 #include "particletype.h"
 #include "resonancetype.h"
 
-int const Particle::fMaxNumParticleType = 10;
 int Particle::fNParticleType = 0;
 std::vector<ParticleType*> Particle::fParticleType{};
 
@@ -39,7 +38,7 @@ void Particle::AddParticleType(
     double width) {
   // ResonanceType particle(name, mass, charge, width);
   // molto riscioso
-  if (FindParticle(name) == -1 && fNParticleType < fMaxNumParticleType) {
+  if (FindParticle(name) == -1) {
     if (width != 0) {
       ResonanceType* particle = new ResonanceType(name, mass, charge, width);
       fParticleType.push_back(particle);
@@ -89,9 +88,7 @@ double Particle::GetPx() const { return fPx; }
 double Particle::GetPy() const { return fPy; }
 double Particle::GetPz() const { return fPz; }
 
-int Particle::GetCharge() const {
-  return fParticleType[fIndex]->GetCharge();
-}
+int Particle::GetCharge() const { return fParticleType[fIndex]->GetCharge(); }
 
 double Particle::GetMass() const { return fParticleType[fIndex]->GetMass(); }
 
@@ -178,7 +175,6 @@ int Particle::Decay2body(Particle& dau1, Particle& dau2) const {
 
   return 0;
 }
-
 
 void Particle::Boost(double bx, double by, double bz) {
   double energy = Energy();
