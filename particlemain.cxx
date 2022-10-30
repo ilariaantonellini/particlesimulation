@@ -12,7 +12,7 @@
 #include "particletype.h"
 #include "resonancetype.h"
 
-void serStyle() {
+void setStyle() {
   gROOT->SetStyle("Plain");
   gStyle->SetOptStat(1122);
   gStyle->SetOptFit(111);
