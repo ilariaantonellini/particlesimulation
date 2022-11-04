@@ -63,19 +63,19 @@ void particleMain() {
   h11->Sumw2();
   h12->Sumw2();
 
-  std::vector<TH1F*> histograms;
-  histograms.push_back(h1);
-  histograms.push_back(h2);
-  histograms.push_back(h3);
-  histograms.push_back(h4);
-  histograms.push_back(h5);
-  histograms.push_back(h6);
-  histograms.push_back(h7);
-  histograms.push_back(h8);
-  histograms.push_back(h9);
-  histograms.push_back(h10);
-  histograms.push_back(h11);
-  histograms.push_back(h12);
+  // std::vector<TH1F*> histograms;
+  // histograms.push_back(h1);
+  // histograms.push_back(h2);
+  // histograms.push_back(h3);
+  // histograms.push_back(h4);
+  // histograms.push_back(h5);
+  // histograms.push_back(h6);
+  // histograms.push_back(h7);
+  // histograms.push_back(h8);
+  // histograms.push_back(h9);
+  // histograms.push_back(h10);
+  // histograms.push_back(h11);
+  // histograms.push_back(h12);
 
   std::vector<Particle> EventParticles;
 
@@ -173,14 +173,14 @@ void particleMain() {
     EventParticles.clear();
   }
 
-  TCanvas* c = new TCanvas("c", "Histograms", 200, 10, 600, 400);
-  c->Divide(4, 3);
+  // TCanvas* c = new TCanvas("c", "Histograms", 200, 10, 600, 400);
+  // c->Divide(4, 3);
 
-  for (int i = 0; i < 12; ++i) {
-    c->cd(i + 1);
-    histograms[i]->DrawCopy("H");
-    histograms[i]->DrawCopy("E, SAME");
-  }
+  // for (int i = 0; i < 12; ++i) {
+  //   c->cd(i + 1);
+  //   histograms[i]->DrawCopy("H");
+  //   histograms[i]->DrawCopy("E, SAME");
+  // }
 
   file->Write();
   file->Close();

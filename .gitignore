@@ -13,7 +13,7 @@ resonancetype_cxx.d
 resonancetype_cxx.so
 resonancetype_cxx_ACLiC_dict_rdict.pcm
 
-# libraries for main
+# libraries for main and analysis (exexutables)
 *.so
 *.d
 *.pcm
