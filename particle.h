@@ -41,7 +41,7 @@ class Particle {
 
  private:
   static std::vector<ParticleType*> fParticleType;
-  static int fNParticleType;  // da controllare e capire
+
   int fIndex;
   double fPx;
   double fPy;

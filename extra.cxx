@@ -1,7 +1,7 @@
 /*  #include <cmath>    // for M_PI
 #include <cstdlib>  //for RAND_MAX
 
-#include "particle.h" 
+#include "particle.h"
 
 int Particle::Decay2body(Particle &dau1, Particle &dau2) const {
   if (GetMass() == 0.0) {

@@ -30,6 +30,9 @@ extra.cxx
 notes.md
 
 #analysis
-analysis.C
-analysis.pdf
+*.C
+*.pdf
+
+# images
+*.png
 

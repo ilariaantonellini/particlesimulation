@@ -55,6 +55,7 @@
         "iomanip": "cpp",
         "mutex": "cpp",
         "thread": "cpp",
-        "analysis.C": "cpp"
+        "analysis.C": "cpp",
+        "panalysis.C": "cpp"
     }
 }

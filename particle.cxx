@@ -7,7 +7,6 @@
 #include "particletype.h"
 #include "resonancetype.h"
 
-int Particle::fNParticleType = 0;
 std::vector<ParticleType*> Particle::fParticleType{};
 
 int Particle::FindParticle(std::string const& nameParticle) {

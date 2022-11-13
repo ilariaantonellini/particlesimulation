@@ -13,8 +13,8 @@
 
 void setStyle() {
   gROOT->SetStyle("Plain");
-  gStyle->SetOptStat(1122);
-  gStyle->SetOptFit(111);
+  gStyle->SetOptStat(1120);
+  gStyle->SetOptFit(1111);
   gStyle->SetPalette(57);
   gStyle->SetOptTitle(1);
 }
@@ -52,7 +52,7 @@ void analysis() {
   // Fitting magnitude of p
   TF1 *fp = new TF1("fp", "expo", 0, 10);
   fp->SetParameter(1, -1);
-  fp->SetLineColor(kRed);
+  fp->SetLineColor(kBlue);
   fp->SetLineStyle(2);
 
   h4->Fit(fp);
@@ -63,8 +63,7 @@ void analysis() {
 
   h13->Add(h8, h9, 1, -1);
   h14->Add(h10, h11, 1, -1);
-  // al posto di fare le entries usare il metodo integral che da' le entries
-  // correte
+
   double const kmass = 0.89166;
   double const kwidth = 0.050;
 
@@ -94,16 +93,9 @@ void analysis() {
   h4->SetTitle("Distribution of p");
   h5->SetTitle("Distribution of transverse p");
   h6->SetTitle("Particles energy");
-  h7->SetTitle("Invariant mass for all particles");
-  h8->SetTitle("Invariant mass with opposite charge");
-  h9->SetTitle("Invariant mass with same charge");
-  h10->SetTitle("Invariant mass between Pion+/Kaon- and Pion-/Kaon+");
-  h11->SetTitle("Invariant mass between Pion+/Kaon+ and Pion-/Kaon-");
-  h12->SetTitle("Invariant mass between decay products (benchmark histogram)");
-  h13->SetTitle("K* imvariant mass histogram considering all particles");
-  h14->SetTitle(
-      "K* invariant mass histogram considering couples pion/kaon with opposite "
-      "charge");
+  h12->SetTitle("Invariant mass between decay products (benchmark)");
+  h13->SetTitle("K* imvariant mass histogram (all particles)");
+  h14->SetTitle("K* invariant mass histogram (pion/kaon)");
 
   for (long unsigned int i = 0; i != histograms.size(); ++i) {
     histograms[i]->SetFillColor(29);
@@ -113,27 +105,31 @@ void analysis() {
     histograms[i]->GetYaxis()->SetTitle("Entries");
   }
   for (long unsigned int i = 1; i != 3; ++i) {
-    histograms[i]->GetXaxis()->SetTitle("Angles");
+    histograms[i]->GetXaxis()->SetTitle("Angles (rad)");
   }
-  for (long unsigned int i = 4; i != 6; ++i) {
-    histograms[i]->GetXaxis()->SetTitle("p");
+  for (long unsigned int i = 3; i != 5; ++i) {
+    histograms[i]->GetXaxis()->SetTitle("p (GeV/c)");
   }
+  h6->GetXaxis()->SetTitle("Energy (GeV)");
   for (long unsigned int i = 11; i != histograms.size(); ++i) {
-    histograms[i]->GetXaxis()->SetTitle("Invariant mass");
+    histograms[i]->GetXaxis()->SetTitle("Invariant mass (GeV/c^2)");
   }
 
   // Drawing statistical part on canvas
 
-  TCanvas *c1 = new TCanvas("c1", "Histograms", 200, 10, 600, 400);
-  c1->Divide(5, 3);
+  TCanvas *c1 = new TCanvas("c1", "Histograms", 200, 10, 750, 400);
+  h1->GetXaxis()->SetTitleOffset(1);
+  h1->GetXaxis()->SetBinLabel(1, "Pion+");
+  h1->GetXaxis()->SetBinLabel(2, "Pion-");
+  h1->GetXaxis()->SetBinLabel(3, "Kaon+");
+  h1->GetXaxis()->SetBinLabel(4, "Kaon-");
+  h1->GetXaxis()->SetBinLabel(5, "Proton+");
+  h1->GetXaxis()->SetBinLabel(6, "Proton-");
+  h1->GetXaxis()->SetBinLabel(7, "K*");
+  histograms[0]->DrawCopy("H");
+  histograms[0]->DrawCopy("E, P, SAME");
 
-  for (int i = 0; i != 14; ++i) {
-    c1->cd(i + 1);
-    histograms[i]->DrawCopy("H");
-    histograms[i]->DrawCopy("E, P, SAME");
-  }
-
-  TCanvas *c2 = new TCanvas("c2", "Angles distribution", 200, 10, 600, 400);
+  TCanvas *c2 = new TCanvas("c2", "Angles distribution", 200, 10, 1500, 400);
   c2->Divide(2, 1);
   TLegend *legaangles =
       new TLegend(.1, .7, .3, .9, "Azimutal angles distribution");
@@ -144,76 +140,118 @@ void analysis() {
   legpangles->AddEntry(h2, "histogram");
   legpangles->AddEntry(fpolar, "fit");
   c2->cd(1);
+  h2->GetXaxis()->SetTitleOffset(1);
+  h2->GetYaxis()->SetTitleOffset(1.3);
+
+  h2->SetMinimum(8500);
+  h2->SetMaximum(11500);
   histograms[1]->DrawCopy("H");
   histograms[1]->DrawCopy("E, P, SAME");
   legaangles->Draw("SAME");
   c2->cd(2);
+  h3->SetMinimum(8500);
+  h3->SetMaximum(11500);
+  h3->GetXaxis()->SetTitleOffset(1);
+  h3->GetYaxis()->SetTitleOffset(1.3);
+
   histograms[2]->DrawCopy("H");
   histograms[2]->DrawCopy("E, P, SAME");
   legpangles->Draw("SAME");
 
-  TCanvas *c3 = new TCanvas("c3", "p distribution", 200, 10, 600, 400);
+  TCanvas *c3 = new TCanvas("c3", "p distribution", 200, 10, 1500, 400);
   c3->Divide(2, 1);
   TLegend *legp = new TLegend(.1, .7, .3, .9, "p distribution");
   legp->AddEntry(h3, "histogram");
   legp->AddEntry(fp, "fit");
   c3->cd(1);
+  h5->GetXaxis()->SetTitleOffset(1);
+  h5->GetYaxis()->SetTitleOffset(1.3);
+
   histograms[4]->DrawCopy("H");
   histograms[4]->DrawCopy("E, P, SAME");
   c3->cd(2);
+  h4->GetXaxis()->SetTitleOffset(1);
+  h4->GetYaxis()->SetTitleOffset(1.3);
+
   histograms[3]->DrawCopy("H");
   histograms[3]->DrawCopy("E, P, SAME");
   legp->Draw("SAME");
 
-  TCanvas *c4 = new TCanvas("c4", "K* distribution", 200, 10, 600, 400);
+  TCanvas *c4 = new TCanvas("c4", "K* distribution", 200, 10, 1500, 400);
   c4->Divide(2, 1);
   TLegend *leginvmass1 = new TLegend(.1, .7, .3, .9, "K* distribution");
   leginvmass1->AddEntry(h12, "histogram");
   leginvmass1->AddEntry(finvmass1, "fit");
   c4->cd(1);
+  h12->GetXaxis()->SetTitleOffset(1);
+  h12->GetYaxis()->SetTitleOffset(1.3);
+
   histograms[11]->DrawCopy("H");
   histograms[11]->DrawCopy("E, P, SAME");
 
   c4->cd(2);
+  h13->GetXaxis()->SetTitleOffset(1);
+  h13->GetYaxis()->SetTitleOffset(1.3);
+
   histograms[12]->DrawCopy("H");
   histograms[12]->DrawCopy("E, P, SAME");
   leginvmass1->Draw("SAME");
 
-  TCanvas *c5 = new TCanvas("c5", "K* distribution", 200, 10, 600, 400);
+  TCanvas *c5 = new TCanvas("c5", "K* distribution", 200, 10, 1500, 400);
   c5->Divide(2, 1);
   TLegend *leginvmass2 = new TLegend(.1, .7, .3, .9, "K* distribution");
   leginvmass2->AddEntry(h13, "histogram");
   leginvmass2->AddEntry(finvmass2, "fit");
   c5->cd(1);
+  h12->GetXaxis()->SetTitleOffset(1);
+  h12->GetYaxis()->SetTitleOffset(1.3);
+
   histograms[11]->DrawCopy("H");
   histograms[11]->DrawCopy("E, P, SAME");
 
   c5->cd(2);
+  h14->GetXaxis()->SetTitleOffset(1);
+  h14->GetYaxis()->SetTitleOffset(1.3);
+
   histograms[13]->DrawCopy("H");
   histograms[13]->DrawCopy("E, P, SAME");
   leginvmass2->Draw("SAME");
 
+  TCanvas *c6 = new TCanvas("c6", "Energy", 200, 10, 750, 400);
+  histograms[5]->DrawCopy("H");
+  histograms[5]->DrawCopy("E, P, SAME");
+
   // Saving canvas data
 
-  c1->Print("analysis.pdf");
-  c1->Print("analysis.C");
-  c1->Print("analysis.root");
+  c1->Print("particleanalysis.pdf");
+  c1->Print("particleanalysis.C");
+  c1->Print("particleanalysis.root");
+  c1->Print("particleanalysis.png");
 
-  c2->Print("analysis.pdf");
-  c2->Print("analysis.C");
-  c2->Print("analysis.root");
+  c2->Print("anglesanalysis.pdf");
+  c2->Print("anglesanalysis.C");
+  c2->Print("anglesanalysis.root");
+  c2->Print("anglesanalysis.png");
 
-  c3->Print("analysis.pdf");
-  c3->Print("analysis.C");
-  c3->Print("analysis.root");
+  c3->Print("panalysis.pdf");
+  c3->Print("panalysis.C");
+  c3->Print("panalysis.root");
+  c3->Print("panalysis.png");
 
-  c4->Print("analysis.pdf");
-  c4->Print("analysis.C");
-  c4->Print("analysis.root");
+  c4->Print("kdistrib1analysis.pdf");
+  c4->Print("kdistrib1analysis.C");
+  c4->Print("kdistrib1analysis.root");
+  c4->Print("kdistrib1analysis.root");
 
-  c5->Print("analysis.pdf");
-  c5->Print("analysis.C");
-  c5->Print("analysis.root");
+  c5->Print("kdistrib2analysis.pdf");
+  c5->Print("kdistrib2analysis.C");
+  c5->Print("kdistrib2analysis.root");
+  c5->Print("kdistrib2analysis.root");
+
+  c6->Print("energyanalysis.pdf");
+  c6->Print("energyanalysis.C");
+  c6->Print("energyanalysis.root");
+  c6->Print("energyanalysis.root");
 
   // Printing on screen
 
@@ -237,59 +275,63 @@ void analysis() {
   std::cout << '\n' << "Result of fits: " << '\n' << '\n';
 
   std::cout << "h2 fit parameters, chi square and probability of fit: " << '\n'
-            << fazimutal->GetParameter(0) << " "
+            << "p0: " << fazimutal->GetParameter(0) << " "
             << "+/-"
             << " " << fazimutal->GetParError(0) << '\n'
-            << fazimutal->GetChisquare() / fazimutal->GetNDF() << '\n'
-            << fazimutal->GetProb() << '\n';
+            << "Chi square: " << fazimutal->GetChisquare() / fazimutal->GetNDF()
+            << '\n'
+            << "Fit probability: " << fazimutal->GetProb() << '\n';
   std::cout << "h3 fit parameters, chi square and probability of fit: " << '\n'
-            << fpolar->GetParameter(0) << " "
+            << "p0: " << fpolar->GetParameter(0) << " "
             << "+/-"
             << " " << fpolar->GetParError(0) << '\n'
-            << fpolar->GetChisquare() / fpolar->GetNDF() << '\n'
-            << fpolar->GetProb() << '\n';
+            << "Chi square: " << fpolar->GetChisquare() / fpolar->GetNDF()
+            << '\n'
+            << "Fit probability: " << fpolar->GetProb() << '\n';
 
   std::cout << "h4 fit parameters, chi square and probability of fit: " << '\n'
-            << fp->GetParameter(0) << " "
+            << "p0: " << fp->GetParameter(0) << " "
             << "+/-"
             << " " << fp->GetParError(0) << '\n'
-            << fp->GetParameter(1) << " "
+            << "p1: " << fp->GetParameter(1) << " "
             << "+/-"
             << " " << fp->GetParError(1) << '\n'
-            << fp->GetChisquare() / fp->GetNDF() << '\n'
-            << fp->GetProb() << '\n';
+            << "Chi square: " << fp->GetChisquare() / fp->GetNDF() << '\n'
+            << "Fit probability: " << fp->GetProb() << '\n';
 
   std::cout
       << "h13 entries, fit parameters, chi square and probability of fit: "
       << '\n'
-      << histograms[12]->Integral() << '\n'
-      << finvmass1->GetParameter(0) << " "
+      << "Entries: " << histograms[12]->Integral() << '\n'
+      << "p0: " << finvmass1->GetParameter(0) << " "
       << "+/-"
       << " " << finvmass1->GetParError(0) << '\n'
-      << finvmass1->GetParameter(1) << " "
+      << "p1: " << finvmass1->GetParameter(1) << " "
       << "+/-"
       << " " << finvmass1->GetParError(1) << '\n'
-      << finvmass1->GetParameter(2) << " "
+      << "p2: " << finvmass1->GetParameter(2) << " "
       << "+/-"
       << " " << finvmass1->GetParError(2) << '\n'
-      << finvmass1->GetChisquare() / finvmass1->GetNDF() << '\n'
-      << finvmass1->GetProb() << '\n';
+      << "Chi square: " << finvmass1->GetChisquare() / finvmass1->GetNDF()
+      << '\n'
+      << "Fit probability: " << finvmass1->GetProb() << '\n';
 
   std::cout
       << "h14 entries, fit parameters, chi square and probability of fit: "
       << '\n'
-      << histograms[13]->Integral() << '\n'
-      << finvmass2->GetParameter(0) << " "
+      << "Entries: " << histograms[13]->Integral() << '\n'
+      << "p0: " << finvmass2->GetParameter(0) << " "
       << "+/-"
       << " " << finvmass2->GetParError(0) << '\n'
-      << finvmass2->GetParameter(1) << " "
+      << "p1: " << finvmass2->GetParameter(1) << " "
       << "+/-"
       << " " << finvmass2->GetParError(1) << '\n'
-      << finvmass2->GetParameter(2) << " "
+      << "p2: " << finvmass2->GetParameter(2) << " "
       << "+/-"
       << " " << finvmass2->GetParError(2) << '\n'
-      << finvmass2->GetChisquare() / finvmass2->GetNDF() << '\n'
-      << finvmass2->GetProb() << '\n';
+      << "Chi square: " << finvmass2->GetChisquare() / finvmass2->GetNDF()
+      << '\n'
+      << "Fit probability: " << finvmass2->GetProb() << '\n';
 
   file->Close();
 }
