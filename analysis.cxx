@@ -16,7 +16,9 @@ void setStyle() {
   gStyle->SetOptStat(1120);
   gStyle->SetOptFit(1111);
   gStyle->SetPalette(57);
-  gStyle->SetOptTitle(1);
+  gStyle->SetOptTitle(2);
+  gStyle->SetTitleAlign(33);
+  gStyle->SetTitleX(0.50);
 }
 
 void analysis() {
@@ -39,13 +41,10 @@ void analysis() {
                                  h7, h8, h9, h10, h11, h12};
 
   // Fitting angles distribution
-
   TF1 *fazimutal = new TF1("fazimutal", "pol0", 0, 2 * M_PI);
   TF1 *fpolar = new TF1("fpolar", "pol0", 0, M_PI);
-
   fazimutal->SetLineColor(kBlue);
   fpolar->SetLineColor(kBlue);
-
   h2->Fit(fazimutal);
   h3->Fit(fpolar);
 
@@ -54,33 +53,25 @@ void analysis() {
   fp->SetParameter(1, -1);
   fp->SetLineColor(kBlue);
   fp->SetLineStyle(2);
-
   h4->Fit(fp);
 
-  // Analysis of invariant mass
+  // Analysis of invariant mass and fit
   TH1F *h13 = new TH1F(*h8);
   TH1F *h14 = new TH1F(*h10);
-
   h13->Add(h8, h9, 1, -1);
   h14->Add(h10, h11, 1, -1);
-
   double const kmass = 0.89166;
   double const kwidth = 0.050;
-
   TF1 *finvmass1 = new TF1("finvmass1", "gaus", 0, 2);
   TF1 *finvmass2 = new TF1("finvmass2", "gaus", 0, 2);
   finvmass1->SetParameter(1, kmass);
   finvmass1->SetParameter(2, kwidth);
   finvmass2->SetParameter(1, kmass);
   finvmass2->SetParameter(2, kwidth);
-
   finvmass1->SetLineColor(kBlue);
   finvmass2->SetLineColor(kBlue);
-
   h13->Fit(finvmass1);
   h14->Fit(finvmass2);
-
-  // Fitting
 
   histograms.push_back(h13);
   histograms.push_back(h14);
@@ -93,7 +84,7 @@ void analysis() {
   h4->SetTitle("Distribution of p");
   h5->SetTitle("Distribution of transverse p");
   h6->SetTitle("Particles energy");
-  h12->SetTitle("Invariant mass between decay products (benchmark)");
+  h12->SetTitle("K* invariant mass (benchmark)");
   h13->SetTitle("K* imvariant mass histogram (all particles)");
   h14->SetTitle("K* invariant mass histogram (pion/kaon)");
 
@@ -112,22 +103,22 @@ void analysis() {
   }
   h6->GetXaxis()->SetTitle("Energy (GeV)");
   for (long unsigned int i = 11; i != histograms.size(); ++i) {
-    histograms[i]->GetXaxis()->SetTitle("Invariant mass (GeV/c^2)");
+    histograms[i]->GetXaxis()->SetTitle("Invariant mass (GeV/c^{2})");
   }
 
   // Drawing statistical part on canvas
 
   TCanvas *c1 = new TCanvas("c1", "Histograms", 200, 10, 750, 400);
   h1->GetXaxis()->SetTitleOffset(1);
-  h1->GetXaxis()->SetBinLabel(1, "Pion+");
-  h1->GetXaxis()->SetBinLabel(2, "Pion-");
+  h1->GetXaxis()->SetBinLabel(1, "#pi +");
+  h1->GetXaxis()->SetBinLabel(2, "#pi -");
   h1->GetXaxis()->SetBinLabel(3, "Kaon+");
   h1->GetXaxis()->SetBinLabel(4, "Kaon-");
   h1->GetXaxis()->SetBinLabel(5, "Proton+");
   h1->GetXaxis()->SetBinLabel(6, "Proton-");
   h1->GetXaxis()->SetBinLabel(7, "K*");
-  histograms[0]->DrawCopy("H");
-  histograms[0]->DrawCopy("E, P, SAME");
+  h1->DrawCopy("H");
+  h1->DrawCopy("E, P, SAME");
 
   TCanvas *c2 = new TCanvas("c2", "Angles distribution", 200, 10, 1500, 400);
   c2->Divide(2, 1);
@@ -142,20 +133,18 @@ void analysis() {
   c2->cd(1);
   h2->GetXaxis()->SetTitleOffset(1);
   h2->GetYaxis()->SetTitleOffset(1.3);
-
   h2->SetMinimum(8500);
   h2->SetMaximum(11500);
-  histograms[1]->DrawCopy("H");
-  histograms[1]->DrawCopy("E, P, SAME");
+  h2->DrawCopy("H");
+  h2->DrawCopy("E, P, SAME");
   legaangles->Draw("SAME");
   c2->cd(2);
   h3->SetMinimum(8500);
   h3->SetMaximum(11500);
   h3->GetXaxis()->SetTitleOffset(1);
   h3->GetYaxis()->SetTitleOffset(1.3);
-
-  histograms[2]->DrawCopy("H");
-  histograms[2]->DrawCopy("E, P, SAME");
+  h3->DrawCopy("H");
+  h3->DrawCopy("E, P, SAME");
   legpangles->Draw("SAME");
 
   TCanvas *c3 = new TCanvas("c3", "p distribution", 200, 10, 1500, 400);
@@ -166,15 +155,13 @@ void analysis() {
   c3->cd(1);
   h5->GetXaxis()->SetTitleOffset(1);
   h5->GetYaxis()->SetTitleOffset(1.3);
-
-  histograms[4]->DrawCopy("H");
-  histograms[4]->DrawCopy("E, P, SAME");
+  h5->DrawCopy("H");
+  h5->DrawCopy("E, P, SAME");
   c3->cd(2);
   h4->GetXaxis()->SetTitleOffset(1);
   h4->GetYaxis()->SetTitleOffset(1.3);
-
-  histograms[3]->DrawCopy("H");
-  histograms[3]->DrawCopy("E, P, SAME");
+  h4->DrawCopy("H");
+  h4->DrawCopy("E, P, SAME");
   legp->Draw("SAME");
 
   TCanvas *c4 = new TCanvas("c4", "K* distribution", 200, 10, 1500, 400);
@@ -185,16 +172,13 @@ void analysis() {
   c4->cd(1);
   h12->GetXaxis()->SetTitleOffset(1);
   h12->GetYaxis()->SetTitleOffset(1.3);
-
-  histograms[11]->DrawCopy("H");
-  histograms[11]->DrawCopy("E, P, SAME");
-
+  h12->DrawCopy("H");
+  h12->DrawCopy("E, P, SAME");
   c4->cd(2);
   h13->GetXaxis()->SetTitleOffset(1);
   h13->GetYaxis()->SetTitleOffset(1.3);
-
-  histograms[12]->DrawCopy("H");
-  histograms[12]->DrawCopy("E, P, SAME");
+  h13->DrawCopy("H");
+  h13->DrawCopy("E, P, SAME");
   leginvmass1->Draw("SAME");
 
   TCanvas *c5 = new TCanvas("c5", "K* distribution", 200, 10, 1500, 400);
@@ -205,21 +189,18 @@ void analysis() {
   c5->cd(1);
   h12->GetXaxis()->SetTitleOffset(1);
   h12->GetYaxis()->SetTitleOffset(1.3);
-
-  histograms[11]->DrawCopy("H");
-  histograms[11]->DrawCopy("E, P, SAME");
-
+  h12->DrawCopy("H");
+  h12->DrawCopy("E, P, SAME");
   c5->cd(2);
   h14->GetXaxis()->SetTitleOffset(1);
   h14->GetYaxis()->SetTitleOffset(1.3);
-
-  histograms[13]->DrawCopy("H");
-  histograms[13]->DrawCopy("E, P, SAME");
+  h14->DrawCopy("H");
+  h14->DrawCopy("E, P, SAME");
   leginvmass2->Draw("SAME");
 
   TCanvas *c6 = new TCanvas("c6", "Energy", 200, 10, 750, 400);
-  histograms[5]->DrawCopy("H");
-  histograms[5]->DrawCopy("E, P, SAME");
+  h6->DrawCopy("H");
+  h6->DrawCopy("E, P, SAME");
 
   // Saving canvas data
 
