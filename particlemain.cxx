@@ -1,7 +1,6 @@
 #include <cmath>
 #include <vector>
 
-#include "TCanvas.h"
 #include "TFile.h"
 #include "TH1F.h"
 #include "TMath.h"
@@ -11,14 +10,6 @@
 #include "particle.h"
 #include "particletype.h"
 #include "resonancetype.h"
-
-void setStyle() {
-  gROOT->SetStyle("Plain");
-  gStyle->SetOptStat(1122);
-  gStyle->SetOptFit(111);
-  gStyle->SetPalette(57);
-  gStyle->SetOptTitle(0);
-}
 
 void particleMain() {
   // to avoid reload manually
@@ -62,20 +53,6 @@ void particleMain() {
   h10->Sumw2();
   h11->Sumw2();
   h12->Sumw2();
-
-  // std::vector<TH1F*> histograms;
-  // histograms.push_back(h1);
-  // histograms.push_back(h2);
-  // histograms.push_back(h3);
-  // histograms.push_back(h4);
-  // histograms.push_back(h5);
-  // histograms.push_back(h6);
-  // histograms.push_back(h7);
-  // histograms.push_back(h8);
-  // histograms.push_back(h9);
-  // histograms.push_back(h10);
-  // histograms.push_back(h11);
-  // histograms.push_back(h12);
 
   std::vector<Particle> EventParticles;
 
@@ -172,15 +149,6 @@ void particleMain() {
 
     EventParticles.clear();
   }
-
-  // TCanvas* c = new TCanvas("c", "Histograms", 200, 10, 600, 400);
-  // c->Divide(4, 3);
-
-  // for (int i = 0; i < 12; ++i) {
-  //   c->cd(i + 1);
-  //   histograms[i]->DrawCopy("H");
-  //   histograms[i]->DrawCopy("E, SAME");
-  // }
 
   file->Write();
   file->Close();
