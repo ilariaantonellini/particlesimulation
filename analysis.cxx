@@ -64,12 +64,17 @@ void analysis() {
   double const kwidth = 0.050;
   TF1 *finvmass1 = new TF1("finvmass1", "gaus", 0, 2);
   TF1 *finvmass2 = new TF1("finvmass2", "gaus", 0, 2);
+  TF1 *fbenchmark = new TF1("fbenchmark", "gaus", 0, 2);
   finvmass1->SetParameter(1, kmass);
   finvmass1->SetParameter(2, kwidth);
   finvmass2->SetParameter(1, kmass);
   finvmass2->SetParameter(2, kwidth);
+  fbenchmark->SetParameter(1, kmass);
+  fbenchmark->SetParameter(2, kwidth);
   finvmass1->SetLineColor(kBlue);
   finvmass2->SetLineColor(kBlue);
+  fbenchmark->SetLineColor(kBlue);
+  h12->Fit(finvmass1);
   h13->Fit(finvmass1);
   h14->Fit(finvmass2);
 
@@ -167,13 +172,17 @@ void analysis() {
   TCanvas *c4 = new TCanvas("c4", "K* distribution", 200, 10, 1500, 400);
   c4->Divide(2, 1);
   TLegend *leginvmass1 = new TLegend(.1, .7, .3, .9, "K* distribution");
-  leginvmass1->AddEntry(h12, "histogram");
+  leginvmass1->AddEntry(h13, "histogram");
   leginvmass1->AddEntry(finvmass1, "fit");
+  TLegend *legbenchmark = new TLegend(.1, .7, .3, .9, "Benchmark");
+  legbenchmark->AddEntry(h12, "histogram");
+  legbenchmark->AddEntry(fbenchmark, "fit");
   c4->cd(1);
   h12->GetXaxis()->SetTitleOffset(1);
   h12->GetYaxis()->SetTitleOffset(1.3);
   h12->DrawCopy("H");
   h12->DrawCopy("E, P, SAME");
+  legbenchmark->Draw("SAME");
   c4->cd(2);
   h13->GetXaxis()->SetTitleOffset(1);
   h13->GetYaxis()->SetTitleOffset(1.3);
@@ -191,6 +200,7 @@ void analysis() {
   h12->GetYaxis()->SetTitleOffset(1.3);
   h12->DrawCopy("H");
   h12->DrawCopy("E, P, SAME");
+  legbenchmark->Draw("SAME");
   c5->cd(2);
   h14->GetXaxis()->SetTitleOffset(1);
   h14->GetYaxis()->SetTitleOffset(1.3);
@@ -222,17 +232,17 @@ void analysis() {
   c4->Print("kdistrib1analysis.pdf");
   c4->Print("kdistrib1analysis.C");
   c4->Print("kdistrib1analysis.root");
-  c4->Print("kdistrib1analysis.root");
+  c4->Print("kdistrib1analysis.png");
 
   c5->Print("kdistrib2analysis.pdf");
   c5->Print("kdistrib2analysis.C");
   c5->Print("kdistrib2analysis.root");
-  c5->Print("kdistrib2analysis.root");
+  c5->Print("kdistrib2analysis.png");
 
   c6->Print("energyanalysis.pdf");
   c6->Print("energyanalysis.C");
   c6->Print("energyanalysis.root");
-  c6->Print("energyanalysis.root");
+  c6->Print("energyanalysis.png");
 
   // Printing on screen
 
