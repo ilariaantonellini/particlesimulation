@@ -113,6 +113,8 @@ void analysis() {
 
   // Drawing statistical part on canvas
 
+  TFile *analysisfile = new TFile("analysis.root", "RECREATE");
+
   TCanvas *c1 = new TCanvas("c1", "Histograms", 200, 10, 750, 400);
   h1->GetXaxis()->SetTitleOffset(1);
   h1->GetXaxis()->SetBinLabel(1, "#pi +");
@@ -216,33 +218,34 @@ void analysis() {
 
   c1->Print("particleanalysis.pdf");
   c1->Print("particleanalysis.C");
-  c1->Print("particleanalysis.root");
   c1->Print("particleanalysis.png");
 
   c2->Print("anglesanalysis.pdf");
   c2->Print("anglesanalysis.C");
-  c2->Print("anglesanalysis.root");
   c2->Print("anglesanalysis.png");
 
   c3->Print("panalysis.pdf");
   c3->Print("panalysis.C");
-  c3->Print("panalysis.root");
   c3->Print("panalysis.png");
 
   c4->Print("kdistrib1analysis.pdf");
   c4->Print("kdistrib1analysis.C");
-  c4->Print("kdistrib1analysis.root");
   c4->Print("kdistrib1analysis.png");
 
   c5->Print("kdistrib2analysis.pdf");
   c5->Print("kdistrib2analysis.C");
-  c5->Print("kdistrib2analysis.root");
   c5->Print("kdistrib2analysis.png");
 
   c6->Print("energyanalysis.pdf");
   c6->Print("energyanalysis.C");
-  c6->Print("energyanalysis.root");
   c6->Print("energyanalysis.png");
+
+  c1->Write();
+  c2->Write();
+  c3->Write();
+  c4->Write();
+  c5->Write();
+  c6->Write();
 
   // Printing on screen
 
@@ -252,7 +255,9 @@ void analysis() {
   }
 
   // Analysis of generated particles
+  std::cout << "--------------------------------------------" << '\n';
   std::cout << '\n' << "Data Analysis: " << '\n' << '\n';
+  std::cout << "--------------------------------------------" << '\n';
 
   std::cout << "Check proportions of types of particle generated: " << '\n';
   for (int i = 1; i != 8; ++i) {
@@ -262,8 +267,9 @@ void analysis() {
     std::cout << "Bin " << i << " pencentage of particles: "
               << (h1->GetBinContent(i) / h1->GetEntries()) << '\n';
   }
-
+  std::cout << "--------------------------------------------" << '\n';
   std::cout << '\n' << "Result of fits: " << '\n' << '\n';
+  std::cout << "--------------------------------------------" << '\n';
 
   std::cout << "h2 fit parameters, chi square and probability of fit: " << '\n'
             << "p0: " << fazimutal->GetParameter(0) << " "
@@ -272,6 +278,7 @@ void analysis() {
             << "Chi square: " << fazimutal->GetChisquare() / fazimutal->GetNDF()
             << '\n'
             << "Fit probability: " << fazimutal->GetProb() << '\n';
+  std::cout << '\n';
   std::cout << "h3 fit parameters, chi square and probability of fit: " << '\n'
             << "p0: " << fpolar->GetParameter(0) << " "
             << "+/-"
@@ -279,6 +286,7 @@ void analysis() {
             << "Chi square: " << fpolar->GetChisquare() / fpolar->GetNDF()
             << '\n'
             << "Fit probability: " << fpolar->GetProb() << '\n';
+  std::cout << '\n';
 
   std::cout << "h4 fit parameters, chi square and probability of fit: " << '\n'
             << "p0: " << fp->GetParameter(0) << " "
@@ -289,6 +297,7 @@ void analysis() {
             << " " << fp->GetParError(1) << '\n'
             << "Chi square: " << fp->GetChisquare() / fp->GetNDF() << '\n'
             << "Fit probability: " << fp->GetProb() << '\n';
+  std::cout << '\n';
 
   std::cout
       << "h13 entries, fit parameters, chi square and probability of fit: "
@@ -306,6 +315,7 @@ void analysis() {
       << "Chi square: " << finvmass1->GetChisquare() / finvmass1->GetNDF()
       << '\n'
       << "Fit probability: " << finvmass1->GetProb() << '\n';
+  std::cout << '\n';
 
   std::cout
       << "h14 entries, fit parameters, chi square and probability of fit: "
@@ -324,6 +334,7 @@ void analysis() {
       << '\n'
       << "Fit probability: " << finvmass2->GetProb() << '\n';
 
+  analysisfile->Close();
   file->Close();
 }
 
