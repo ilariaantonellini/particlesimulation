@@ -1,3 +1,5 @@
+/*-------------------particle.cxx-------------------*/
+
 #include "particle.h"
 
 #include <cmath>

@@ -1,3 +1,5 @@
+/*-------------------resonancetype.cxx-------------------*/
+
 #include "resonancetype.h"
 
 #include <iostream>

@@ -1,3 +1,5 @@
+/*-------------------particletype.cxx-------------------*/
+
 #include "particletype.h"
 
 #include <iostream>

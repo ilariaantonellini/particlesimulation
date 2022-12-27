@@ -1,3 +1,5 @@
+/*-------------------particletype.h-------------------*/
+
 #ifndef PARTICLETYPE_H
 #define PARTICLETYPE_H
 

@@ -1,3 +1,5 @@
+/*-------------------analysis.cxx-------------------*/
+
 #include <cmath>
 #include <iostream>
 #include <vector>
@@ -45,15 +47,15 @@ void analysis() {
   TF1 *fpolar = new TF1("fpolar", "pol0", 0, M_PI);
   fazimutal->SetLineColor(kBlue);
   fpolar->SetLineColor(kBlue);
-  h2->Fit(fazimutal);
-  h3->Fit(fpolar);
+  h2->Fit("fazimutal", "BQ");
+  h3->Fit("fpolar", "BQ");
 
   // Fitting magnitude of p
   TF1 *fp = new TF1("fp", "expo", 0, 10);
   fp->SetParameter(1, -1);
   fp->SetLineColor(kBlue);
   fp->SetLineStyle(2);
-  h4->Fit(fp);
+  h4->Fit("fp", "BQ");
 
   // Analysis of invariant mass and fit
   TH1F *h13 = new TH1F(*h8);
@@ -74,9 +76,9 @@ void analysis() {
   finvmass1->SetLineColor(kBlue);
   finvmass2->SetLineColor(kBlue);
   fbenchmark->SetLineColor(kBlue);
-  h12->Fit(finvmass1);
-  h13->Fit(finvmass1);
-  h14->Fit(finvmass2);
+  h12->Fit("fbenchmark", "BQ");
+  h13->Fit("finvmass1", "BQ");
+  h14->Fit("finvmass2", "BQ");
 
   histograms.push_back(h13);
   histograms.push_back(h14);
@@ -90,7 +92,7 @@ void analysis() {
   h5->SetTitle("Distribution of transverse p");
   h6->SetTitle("Particles energy");
   h12->SetTitle("K* invariant mass (benchmark)");
-  h13->SetTitle("K* imvariant mass histogram (all particles)");
+  h13->SetTitle("K* invariant mass histogram (all particles)");
   h14->SetTitle("K* invariant mass histogram (pion/kaon)");
 
   for (long unsigned int i = 0; i != histograms.size(); ++i) {
@@ -271,68 +273,104 @@ void analysis() {
   std::cout << '\n' << "Result of fits: " << '\n' << '\n';
   std::cout << "--------------------------------------------" << '\n';
 
-  std::cout << "h2 fit parameters, chi square and probability of fit: " << '\n'
-            << "p0: " << fazimutal->GetParameter(0) << " "
-            << "+/-"
-            << " " << fazimutal->GetParError(0) << '\n'
-            << "Chi square: " << fazimutal->GetChisquare() / fazimutal->GetNDF()
-            << '\n'
-            << "Fit probability: " << fazimutal->GetProb() << '\n';
+  std::cout
+      << "Azimutal angles fit parameters, chi square and probability of fit: "
+      << '\n'
+      << "p0: " << fazimutal->GetParameter(0) << " "
+      << "+/-"
+      << " " << fazimutal->GetParError(0) << '\n'
+      << "Chi square: " << fazimutal->GetChisquare()
+      << " NDF: " << fazimutal->GetNDF() << '\n'
+      << "Chi square reduced: "
+      << fazimutal->GetChisquare() / fazimutal->GetNDF() << '\n'
+      << "Fit probability: " << fazimutal->GetProb() << '\n';
   std::cout << '\n';
-  std::cout << "h3 fit parameters, chi square and probability of fit: " << '\n'
-            << "p0: " << fpolar->GetParameter(0) << " "
-            << "+/-"
-            << " " << fpolar->GetParError(0) << '\n'
-            << "Chi square: " << fpolar->GetChisquare() / fpolar->GetNDF()
-            << '\n'
-            << "Fit probability: " << fpolar->GetProb() << '\n';
+  std::cout
+      << "Polar angles fit parameters, chi square and probability of fit: "
+      << '\n'
+      << "p0: " << fpolar->GetParameter(0) << " "
+      << "+/-"
+      << " " << fpolar->GetParError(0) << '\n'
+      << "Chi square: " << fpolar->GetChisquare()
+      << " NDF: " << fpolar->GetNDF() << '\n'
+      << "Chi square reduced: " << fpolar->GetChisquare() / fpolar->GetNDF()
+      << '\n'
+      << "Fit probability: " << fpolar->GetProb() << '\n';
   std::cout << '\n';
 
-  std::cout << "h4 fit parameters, chi square and probability of fit: " << '\n'
+  std::cout << "Impulse fit parameters, chi square and probability of fit: "
+            << '\n'
             << "p0: " << fp->GetParameter(0) << " "
             << "+/-"
             << " " << fp->GetParError(0) << '\n'
             << "p1: " << fp->GetParameter(1) << " "
             << "+/-"
             << " " << fp->GetParError(1) << '\n'
-            << "Chi square: " << fp->GetChisquare() / fp->GetNDF() << '\n'
+            << "Chi square: " << fp->GetChisquare() << " NDF: " << fp->GetNDF()
+            << '\n'
+            << "Chi square reduced: " << fp->GetChisquare() / fp->GetNDF()
+            << '\n'
             << "Fit probability: " << fp->GetProb() << '\n';
   std::cout << '\n';
 
-  std::cout
-      << "h13 entries, fit parameters, chi square and probability of fit: "
-      << '\n'
-      << "Entries: " << histograms[12]->Integral() << '\n'
-      << "p0: " << finvmass1->GetParameter(0) << " "
-      << "+/-"
-      << " " << finvmass1->GetParError(0) << '\n'
-      << "p1: " << finvmass1->GetParameter(1) << " "
-      << "+/-"
-      << " " << finvmass1->GetParError(1) << '\n'
-      << "p2: " << finvmass1->GetParameter(2) << " "
-      << "+/-"
-      << " " << finvmass1->GetParError(2) << '\n'
-      << "Chi square: " << finvmass1->GetChisquare() / finvmass1->GetNDF()
-      << '\n'
-      << "Fit probability: " << finvmass1->GetProb() << '\n';
+  std::cout << "Invariant mass (all particles) entries, fit parameters, chi "
+               "square and probability of fit: "
+            << '\n'
+            << "Entries: " << histograms[12]->Integral() << '\n'
+            << "p0: " << finvmass1->GetParameter(0) << " "
+            << "+/-"
+            << " " << finvmass1->GetParError(0) << '\n'
+            << "p1: " << finvmass1->GetParameter(1) << " "
+            << "+/-"
+            << " " << finvmass1->GetParError(1) << '\n'
+            << "p2: " << finvmass1->GetParameter(2) << " "
+            << "+/-"
+            << " " << finvmass1->GetParError(2) << '\n'
+            << "Chi square: " << finvmass1->GetChisquare()
+            << " NDF: " << finvmass1->GetNDF() << '\n'
+            << "Chi square reduced: "
+            << finvmass1->GetChisquare() / finvmass1->GetNDF() << '\n'
+            << "Fit probability: " << finvmass1->GetProb() << '\n';
   std::cout << '\n';
 
-  std::cout
-      << "h14 entries, fit parameters, chi square and probability of fit: "
-      << '\n'
-      << "Entries: " << histograms[13]->Integral() << '\n'
-      << "p0: " << finvmass2->GetParameter(0) << " "
-      << "+/-"
-      << " " << finvmass2->GetParError(0) << '\n'
-      << "p1: " << finvmass2->GetParameter(1) << " "
-      << "+/-"
-      << " " << finvmass2->GetParError(1) << '\n'
-      << "p2: " << finvmass2->GetParameter(2) << " "
-      << "+/-"
-      << " " << finvmass2->GetParError(2) << '\n'
-      << "Chi square: " << finvmass2->GetChisquare() / finvmass2->GetNDF()
-      << '\n'
-      << "Fit probability: " << finvmass2->GetProb() << '\n';
+  std::cout << "Invariant mass (pion/kaon) entries, fit parameters, chi square "
+               "and probability of fit: "
+            << '\n'
+            << "Entries: " << histograms[13]->Integral() << '\n'
+            << "p0: " << finvmass2->GetParameter(0) << " "
+            << "+/-"
+            << " " << finvmass2->GetParError(0) << '\n'
+            << "p1: " << finvmass2->GetParameter(1) << " "
+            << "+/-"
+            << " " << finvmass2->GetParError(1) << '\n'
+            << "p2: " << finvmass2->GetParameter(2) << " "
+            << "+/-"
+            << " " << finvmass2->GetParError(2) << '\n'
+            << "Chi square: " << finvmass2->GetChisquare() << " NDF: " << finvmass2->GetNDF()
+            << '\n'
+            << "Chi square reduced: " << finvmass2->GetChisquare() / finvmass2->GetNDF() << '\n'
+            << "Fit probability: " << finvmass2->GetProb() << '\n';
+  std::cout << '\n';
+
+  std::cout << "Invariant mass (benchmark) entries, fit parameters, chi "
+               "square and probability of fit: "
+            << '\n'
+            << "Entries: " << histograms[11]->Integral() << '\n'
+            << "p0: " << fbenchmark->GetParameter(0) << " "
+            << "+/-"
+            << " " << fbenchmark->GetParError(0) << '\n'
+            << "p1: " << fbenchmark->GetParameter(1) << " "
+            << "+/-"
+            << " " << fbenchmark->GetParError(1) << '\n'
+            << "p2: " << fbenchmark->GetParameter(2) << " "
+            << "+/-"
+            << " " << fbenchmark->GetParError(2) << '\n'
+            << "Chi square: " << fbenchmark->GetChisquare()
+            << " NDF: " << fbenchmark->GetNDF() << '\n'
+            << "Chi square reduced: "
+            << fbenchmark->GetChisquare() / fbenchmark->GetNDF() << '\n'
+            << "Fit probability: " << fbenchmark->GetProb() << '\n';
+  std::cout << '\n';
 
   analysisfile->Close();
   file->Close();

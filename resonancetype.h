@@ -1,3 +1,5 @@
+/*-------------------resonancetype.h-------------------*/
+
 #ifndef RESONANCETYPE_H
 #define RESONANCETYPE_H
 
